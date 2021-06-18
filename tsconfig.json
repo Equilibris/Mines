@@ -7,5 +7,5 @@
 		"allowJs": true,
 		"downlevelIteration": true
 	},
-	"files": ["src/index.ts"]
+	"files": ["src/index.ts", "index.d.ts"]
 }

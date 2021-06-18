@@ -1,0 +1,5 @@
+export const c1 = '#3d5a80'
+export const c2 = '#98c1d9'
+export const c3 = '#e0fbfc'
+export const c4 = '#ee6c4d'
+export const c5 = '#293241'
