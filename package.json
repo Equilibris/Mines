@@ -3,6 +3,16 @@
 	"version": "1.0.0",
 	"main": "index.js",
 	"license": "MIT",
+	"scripts": {
+		"build": "webpack --mode=production --node-env=production",
+		"build:dev": "webpack --mode=development",
+		"build:prod": "webpack --mode=production --node-env=production",
+		"watch": "webpack --watch",
+		"dev": "webpack serve",
+		"asbuild:untouched": "asc assembly/index.ts --target debug",
+		"asbuild:optimized": "asc assembly/index.ts --target release",
+		"asbuild": "yarn asbuild:untouched && yarn asbuild:optimized"
+	},
 	"devDependencies": {
 		"@webpack-cli/generators": "^2.2.0",
 		"assemblyscript": "^0.19.3",
@@ -20,17 +30,11 @@
 		"workbox-webpack-plugin": "^6.1.5"
 	},
 	"description": "My webpack project",
-	"scripts": {
-		"build": "webpack --mode=production --node-env=production",
-		"build:dev": "webpack --mode=development",
-		"build:prod": "webpack --mode=production --node-env=production",
-		"watch": "webpack --watch",
-		"dev": "webpack serve",
-		"asbuild:untouched": "asc assembly/index.ts --target debug",
-		"asbuild:optimized": "asc assembly/index.ts --target release",
-		"asbuild": "yarn asbuild:untouched && yarn asbuild:optimized"
-	},
 	"dependencies": {
-		"@assemblyscript/loader": "^0.19.3"
+		"@assemblyscript/loader": "^0.19.3",
+		"@types/copy-webpack-plugin": "^8.0.0",
+		"copy-webpack-plugin": "^9.0.0",
+		"file-loader": "^6.2.0",
+		"synchronized-promise": "^0.3.1"
 	}
 }

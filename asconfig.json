@@ -8,6 +8,7 @@
 		},
 		"release": {
 			"binaryFile": "src/asm/dist/optimized.wasm",
+			"tsdFile": "src/asm/dist/optimized.type.d.ts",
 			"textFile": "dist/optimized.wat",
 			"sourceMap": true,
 			"optimizeLevel": 3,
