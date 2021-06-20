@@ -4,14 +4,14 @@
 	"main": "index.js",
 	"license": "MIT",
 	"scripts": {
-		"build": "webpack --mode=production --node-env=production",
-		"build:dev": "webpack --mode=development",
-		"build:prod": "webpack --mode=production --node-env=production",
+		"build": "yarn asbuild:optimized && webpack --mode=production --node-env=production",
+		"build:dev": "yarn asbuild:untouched && webpack --mode=development",
+		"build:prod": "yarn asbuild:optimized && webpack --mode=production --node-env=production",
 		"watch": "webpack --watch",
 		"dev": "webpack serve",
 		"asbuild:untouched": "asc assembly/index.ts --target debug",
 		"asbuild:optimized": "asc assembly/index.ts --target release",
-		"asbuild": "yarn asbuild:untouched && yarn asbuild:optimized"
+		"asbuild": "yarn asbuild:untouched"
 	},
 	"devDependencies": {
 		"@webpack-cli/generators": "^2.2.0",
