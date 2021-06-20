@@ -1,15 +1,15 @@
 {
 	"targets": {
 		"debug": {
-			"binaryFile": "src/asm/dist/untouched.wasm",
-			"textFile": "dist/untouched.wat",
+			"binaryFile": "src/asm/dist/build.wasm",
+			"textFile": "dist/build.wat",
 			"sourceMap": true,
 			"debug": true
 		},
 		"release": {
-			"binaryFile": "src/asm/dist/optimized.wasm",
-			"tsdFile": "src/asm/dist/optimized.type.d.ts",
-			"textFile": "dist/optimized.wat",
+			"binaryFile": "src/asm/dist/build.wasm",
+			"tsdFile": "src/asm/dist/build.type.d.ts",
+			"textFile": "dist/build.wat",
 			"sourceMap": true,
 			"optimizeLevel": 3,
 			"shrinkLevel": 1,
