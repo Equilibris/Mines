@@ -1,3 +1,2 @@
-import { Game } from './game'
-
-const game = new Game(10, 10)
+export { Game } from './game'
+export { v1 } from './algorithm'
