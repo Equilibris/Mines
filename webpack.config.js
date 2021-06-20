@@ -24,7 +24,7 @@ const config = {
 		new MiniCssExtractPlugin(),
 
 		new CopyPlugin({
-			patterns: [{ from: './src/asm/dist/optimized.wasm.map' }],
+			patterns: [{ from: './src/asm/dist/build.wasm.map' }],
 		}),
 		// Add your plugins here
 		// Learn more about plugins from https://webpack.js.org/configuration/plugins/

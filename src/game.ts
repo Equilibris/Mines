@@ -1,5 +1,5 @@
 import { Point, MaybePoint } from './point'
-import { Game as GameExec } from './asm/dist/optimized.type.d'
+import { Game as GameExec } from './asm/dist/build.type.d'
 import './game.scss'
 
 type Neighburs = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8

@@ -3,8 +3,8 @@ import './index.scss'
 import { Game } from './game'
 import { Point } from './point'
 
-import * as wasTypes from './asm/dist/optimized.type.d'
-import was from './asm/dist/optimized.wasm'
+import * as wasTypes from './asm/dist/build.type.d'
+import was from './asm/dist/build.wasm'
 import { Imports, instantiate } from '@assemblyscript/loader'
 
 let str = ''
