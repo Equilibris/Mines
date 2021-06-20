@@ -24,6 +24,9 @@ const renderPointer = {
 				putC(char: number) {
 					str += String.fromCharCode(char)
 				},
+				putI(int: number) {
+					str += String(int)
+				},
 				flush() {
 					console.log(str)
 					str = ''
@@ -36,14 +39,17 @@ const renderPointer = {
 	)
 
 	const size = 20
+	const count = size**2 * 0.1
 
-	const game = new exports.Game(size, size)
+	const game = new exports.Game(size, count)
 
 	const renderer = new Game(size, document.getElementById('root'), game)
 
-	renderPointer.render = renderer.render
+	renderPointer.render = () => renderer.render()
 
 	renderer.build()
 
-	exports.v1.solve(game.valueOf())
+	console.log(game.stateOfPoint(game.getInitialPoint()))
+
+	// exports.v1.solve(game.valueOf())
 })()

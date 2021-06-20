@@ -1,14 +1,23 @@
 import { Point, randomPoint } from './point'
-import { putS } from './console'
+import { logS, putS, putI, flush } from './console'
 
-function indexesOf<T>(arr: StaticArray<T>, item: T): Array<u32> {
+function indexesOf<T extends number>(arr: StaticArray<T>, item: T): Array<u32> {
 	const items: Array<u32> = []
 
 	const l = arr.length as u32
 
+	putS(`Indexes of ${item} including: [ `)
+
 	for (let index: u32 = 0; index < l; index++) {
-		if (arr[index] == item) items.push(index)
+		if (arr[index] == item) {
+			putI(index)
+			putS(' ')
+
+			items.push(index)
+		}
 	}
+	putS(']')
+	flush()
 	return items
 }
 
@@ -23,7 +32,7 @@ export class Game {
 	}
 
 	constructor(public size: i32, public count: i32) {
-		this.gameGrid = new StaticArray(count)
+		this.gameGrid = new StaticArray(size)
 
 		this.pointGrid = new StaticArray(size)
 
@@ -85,36 +94,29 @@ export class Game {
 	}
 
 	public getInitialPoint(): Point {
+		// this points to a random point of which its state is not 0
+		// TODO: fix that
 		const cursor: Point = { x: this.size / 2, y: this.size / 2 }
+
+		const getYShift = (itr: i32): i32 =>
+			((1 - 2 * (itr % 2)) * Math.floor(itr / 2)) as i32
 
 		for (
 			let itr = 1,
-				items = indexesOf(
-					this.pointGrid[
-						cursor.y + (((1 - 2 * (itr % 2)) * Math.floor(itr / 2)) as i32)
-					],
-					0 as i8
-				);
+				items = indexesOf(this.pointGrid[cursor.y + getYShift(itr)], 0 as i8);
 			itr < this.size / 2;
 			itr++,
 				items = items =
-					indexesOf(
-						this.pointGrid[
-							cursor.y + (((1 - 2 * (itr % 2)) * Math.floor(itr / 2)) as i32)
-						],
-						0 as i8
-					)
+					indexesOf(this.pointGrid[cursor.y + getYShift(itr)], 0 as i8)
 		) {
 			if (!items.length) continue
 
 			cursor.x = items[(items.length / 2) as u32]
-			cursor.y = cursor.y + (((1 - 2 * (itr % 2)) * Math.floor(itr / 2)) as i32)
-			break
+			cursor.y += getYShift(itr)
+
+			return cursor
 		}
-
-		putS(`initial:\nx = ${cursor.x},\ny = ${cursor.y}`)
-
-		return cursor
+		return cursor // just to fix ts
 	}
 
 	public inspect(point: Point): i8 {

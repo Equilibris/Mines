@@ -1,4 +1,4 @@
-import { putS } from './console'
+import { logS } from './console'
 import { Game } from './game'
 import { Point } from './point'
 import { render } from './renderer'
@@ -17,9 +17,8 @@ export namespace v1 {
 
 			const state = game.reveal(current)
 
-			if (state == -3) continue
+			if (state < 0) continue
 			else if (state == 0) {
-				putS(`current state = ${state}`)
 				const p1: Point = { x: current.x - 1, y: current.y - 1 }
 				const p2: Point = { x: current.x - 1, y: current.y }
 				const p3: Point = { x: current.x - 1, y: current.y + 1 }
@@ -47,12 +46,16 @@ export namespace v1 {
 				priorityStackQueue.unshift(p7)
 				unresolved.add(game.hash(p8))
 				priorityStackQueue.unshift(p8)
-			}
 
-			resolved.add(game.hash(current))
+				resolved.add(game.hash(current))
+			} else {
+				logS(`current state = ${state}`)
+			}
 		}
 	}
-	function Guess(game: Game, unresolved: Set<Point>): void {}
+	function Guess(game: Game, unresolved: Set<Point>): void {
+		// full body guess model vs most probable guess model
+	}
 
 	export function solve(game: Game): void {
 		const priorityStackQueue = new Array<Point>() // should be an OrderedSetStackQueue
