@@ -66,10 +66,12 @@ export class Game {
 			}
 		}
 	}
-	private bombAt(x: i32, y: i32): i8 {
+	public inBounds(x: number, y: number): boolean {
 		return x >= 0 && y >= 0 && x < this.size && y < this.size
-			? +(this.pointGrid[x][y] == -1)
-			: 0
+	}
+
+	private bombAt(x: i32, y: i32): i8 {
+		return this.inBounds(x, y) ? +(this.pointGrid[x][y] == -1) : 0
 	}
 
 	public _stateOfPoint(x: i32, y: i32): i8 {
@@ -77,6 +79,9 @@ export class Game {
 	}
 	public stateOfPoint(point: Point): i8 {
 		return this.pointGrid[point.x][point.y]
+	}
+	public isRevealed(x: i32, y: i32): boolean {
+		return this.gameGrid[x][y] != -2
 	}
 
 	public getInitialPoint(): Point {
@@ -116,6 +121,8 @@ export class Game {
 		return this.gameGrid[point.x][point.y]
 	}
 	public reveal(point: Point): i8 {
+		if (!this.inBounds(point.x, point.y)) return -3 // Out of bounds
+
 		if (this.gameGrid[point.x][point.y] == -2) this.revealedCount++
 
 		const state = this.stateOfPoint(point)
@@ -129,5 +136,8 @@ export class Game {
 	public flag(point: Point): void {
 		this.revealedCount++
 		this.gameGrid[point.x][point.y] = -1
+	}
+	public hash(point: Point): u32 {
+		return point.x + point.y * this.size
 	}
 }

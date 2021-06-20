@@ -3,15 +3,47 @@ import './index.scss'
 import { Game } from './game'
 import { Point } from './point'
 
-const size = 10
-const percent = 0.5
+import * as wasTypes from './asm/dist/optimized.type.d'
+import was from './asm/dist/optimized.wasm'
+import { Imports, instantiate } from '@assemblyscript/loader'
 
-const game = new Game(
-	size,
-	size ** 2 * percent,
-	document.getElementById('root')
-)
+let str = ''
 
+const renderPointer = {
+	render: (): void => {
+		console.log('rendering')
+	},
+}
 
-game.build()
-console.log(game.pointGrid)
+;(async () => {
+	const { exports } = await instantiate<typeof wasTypes>(
+		await (await fetch(was)).arrayBuffer(),
+		{
+			console: {
+				logI: console.log,
+				putC(char: number) {
+					str += String.fromCharCode(char)
+				},
+				flush() {
+					console.log(str)
+					str = ''
+				},
+			},
+			renderer: {
+				render: () => renderPointer.render(),
+			},
+		}
+	)
+
+	const size = 20
+
+	const game = new exports.Game(size, size)
+
+	const renderer = new Game(size, document.getElementById('root'), game)
+
+	renderPointer.render = renderer.render
+
+	renderer.build()
+
+	exports.v1.solve(game.valueOf())
+})()

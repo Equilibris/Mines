@@ -35,8 +35,6 @@ export class Game {
 
 			if (child.innerText === BOMB) child.classList.add('bomb')
 
-			if (Math.random() > 0.5) child.classList.add('uncovered')
-
 			if (this.size > 30) child.classList.add('small')
 
 			if (this.size > 325) child.classList.add('tiny')
@@ -44,5 +42,12 @@ export class Game {
 			this.mount.appendChild(child)
 		}
 	}
-	
+	render() {
+		for (let i = 0; i < this.size ** 2; i++) {
+			const child = this.mount.children.item(i)
+
+			if (this.game.isRevealed(i % this.size, Math.floor(i / this.size)))
+				child.classList.add('revealed')
+		}
+	}
 }
