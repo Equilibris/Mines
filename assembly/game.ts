@@ -1,23 +1,24 @@
 import { Point, randomPoint } from './point'
-import { logS, putS, putI, flush } from './console'
+import {
+	logS,
+	putS,
+	putI,
+	flush,
+	logI,
+	logIArray,
+	logIStaticArray,
+} from './console'
 
 function indexesOf<T extends number>(arr: StaticArray<T>, item: T): Array<u32> {
 	const items: Array<u32> = []
 
 	const l = arr.length as u32
 
-	putS(`Indexes of ${item} including: [ `)
-
 	for (let index: u32 = 0; index < l; index++) {
 		if (arr[index] == item) {
-			putI(index)
-			putS(' ')
-
 			items.push(index)
 		}
 	}
-	putS(']')
-	flush()
 	return items
 }
 
@@ -98,24 +99,24 @@ export class Game {
 		// TODO: fix that
 		const cursor: Point = { x: this.size / 2, y: this.size / 2 }
 
-		const getYShift = (itr: i32): i32 =>
-			((1 - 2 * (itr % 2)) * Math.floor(itr / 2)) as i32
+		cursor.x = this.pointGrid[cursor.y].indexOf(0)
 
-		for (
-			let itr = 1,
-				items = indexesOf(this.pointGrid[cursor.y + getYShift(itr)], 0 as i8);
-			itr < this.size / 2;
-			itr++,
-				items = items =
-					indexesOf(this.pointGrid[cursor.y + getYShift(itr)], 0 as i8)
-		) {
-			if (!items.length) continue
+		// const getYShift = (itr: i32): i32 =>
+		// 	((1 - 2 * (itr % 2)) * Math.floor(itr / 2)) as i32
 
-			cursor.x = items[(items.length / 2) as u32]
-			cursor.y += getYShift(itr)
+		// for (
+		// 	let itr = 1,
+		// 		items = indexesOf(this.pointGrid[cursor.y + getYShift(itr)], 0 as i8);
+		// 	itr < this.size / 2;
+		// 	itr++,
+		// 		items = indexesOf(this.pointGrid[cursor.y + getYShift(itr)], 0 as i8)
+		// ) {
+		// 	if (!items.length) continue
 
-			return cursor
-		}
+		// 	cursor.x = items[(items.length / 2) as u32]
+
+		// 	return cursor
+		// }
 		return cursor // just to fix ts
 	}
 

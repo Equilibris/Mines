@@ -15,3 +15,28 @@ export function logS(string: string): void {
 	putS(string)
 	flush()
 }
+
+export function logIArray<T extends number>(arr: Array<T>): void {
+	putS(`[ `)
+
+	const l = arr.length as u32
+
+	for (let index: u32 = 0; index < l; index++) {
+		putI(arr[index])
+		putS(', ')
+	}
+	putS(']')
+	flush()
+}
+export function logIStaticArray<T extends number>(arr: StaticArray<T>): void {
+	putS(`[ `)
+
+	const l = arr.length as u32
+
+	for (let index: u32 = 0; index < l; index++) {
+		putI(arr[index])
+		putS(', ')
+	}
+	putS(']')
+	flush()
+}

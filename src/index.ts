@@ -51,5 +51,5 @@ const renderPointer = {
 
 	console.log(game.stateOfPoint(game.getInitialPoint()))
 
-	// exports.v1.solve(game.valueOf())
+	exports.v1.solve(game.valueOf())
 })()
