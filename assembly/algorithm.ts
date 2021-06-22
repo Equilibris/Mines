@@ -1,7 +1,24 @@
 import { logS } from './console'
 import { Game } from './game'
-import { Point } from './point'
+import { Point, pointToString } from './point'
 import { render } from './renderer'
+
+function surroundingPoints(point: Point): StaticArray<Point> {
+	const points = new StaticArray<Point>(8)
+
+	points[0] = { x: point.x - 1, y: point.y - 1 }
+	points[1] = { x: point.x - 1, y: point.y }
+	points[2] = { x: point.x - 1, y: point.y + 1 }
+
+	points[3] = { x: point.x, y: point.y - 1 }
+	points[4] = { x: point.x, y: point.y + 1 }
+
+	points[5] = { x: point.x + 1, y: point.y - 1 }
+	points[6] = { x: point.x + 1, y: point.y }
+	points[7] = { x: point.x + 1, y: point.y + 1 }
+
+	return points
+}
 
 export namespace v1 {
 	function Objective(
@@ -11,7 +28,7 @@ export namespace v1 {
 		unresolved: Set<u32>
 	): void {
 		while (priorityStackQueue.length) {
-			const current = priorityStackQueue.shift()
+			const current = priorityStackQueue.pop()
 
 			if (resolved.has(game.hash(current))) continue
 
@@ -19,37 +36,53 @@ export namespace v1 {
 
 			if (state < 0) continue
 			else if (state == 0) {
-				const p1: Point = { x: current.x - 1, y: current.y - 1 }
-				const p2: Point = { x: current.x - 1, y: current.y }
-				const p3: Point = { x: current.x - 1, y: current.y + 1 }
+				const points = surroundingPoints(current)
 
-				const p4: Point = { x: current.x, y: current.y - 1 }
-				const p5: Point = { x: current.x, y: current.y + 1 }
-
-				const p6: Point = { x: current.x + 1, y: current.y - 1 }
-				const p7: Point = { x: current.x + 1, y: current.y }
-				const p8: Point = { x: current.x + 1, y: current.y + 1 }
-
-				unresolved.add(game.hash(p1))
-				priorityStackQueue.unshift(p1)
-				unresolved.add(game.hash(p2))
-				priorityStackQueue.unshift(p2)
-				unresolved.add(game.hash(p3))
-				priorityStackQueue.unshift(p3)
-				unresolved.add(game.hash(p4))
-				priorityStackQueue.unshift(p4)
-				unresolved.add(game.hash(p5))
-				priorityStackQueue.unshift(p5)
-				unresolved.add(game.hash(p6))
-				priorityStackQueue.unshift(p6)
-				unresolved.add(game.hash(p7))
-				priorityStackQueue.unshift(p7)
-				unresolved.add(game.hash(p8))
-				priorityStackQueue.unshift(p8)
+				for (let i = 0; i < points.length; i++) {
+					unresolved.add(game.hash(points[i]))
+					priorityStackQueue.push(points[i])
+				}
 
 				resolved.add(game.hash(current))
+				unresolved.delete(game.hash(current))
 			} else {
-				logS(`current state = ${state}`)
+				const points = surroundingPoints(current)
+
+				const flags = new Array<Point>()
+				const free = new Array<Point>()
+				const localUnresolved = new Array<Point>()
+
+				for (let i = 0; i < points.length; i++) {
+					const current = points[i]
+
+					if (!game.isRevealed(current)) free.push(current)
+					if (
+						game.isRevealed(current) &&
+						game.inBounds(current.x, current.y) &&
+						game.inspect(current) == -1
+					)
+						flags.push(current)
+					if (unresolved.has(game.hash(current))) localUnresolved.push(current)
+				}
+				if (state == flags.length) {
+					logS(`${pointToString(current)} has more to do...`)
+					for (let i = 0; i < localUnresolved.length; i++) {
+						priorityStackQueue.push(localUnresolved[i])
+					}
+					for (let i = 0; i < free.length; i++) {
+						priorityStackQueue.push(free[i])
+					}
+				} else if (free.length == 0)
+					logS(`${pointToString(current)} is in progress of resolving`)
+				else if (free.length == state - flags.length) {
+					for (let i = 0; i < free.length; i++) game.flag(free[i])
+
+					for (let i = 0; i < localUnresolved.length; i++) {
+						priorityStackQueue.push(localUnresolved[i])
+					}
+				} else continue
+				resolved.add(game.hash(current))
+				unresolved.delete(game.hash(current))
 			}
 		}
 	}

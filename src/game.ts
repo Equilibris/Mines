@@ -46,7 +46,7 @@ export class Game {
 		for (let i = 0; i < this.size ** 2; i++) {
 			const child = this.mount.children.item(i)
 
-			if (this.game.isRevealed(i % this.size, Math.floor(i / this.size)))
+			if (this.game._isRevealed(i % this.size, Math.floor(i / this.size)))
 				child.classList.add('revealed')
 		}
 	}

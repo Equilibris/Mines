@@ -2,6 +2,7 @@
 	"targets": {
 		"debug": {
 			"binaryFile": "src/asm/dist/build.wasm",
+			"tsdFile": "src/asm/dist/build.type.d.ts",
 			"textFile": "dist/build.wat",
 			"sourceMap": true,
 			"debug": true
@@ -13,6 +14,7 @@
 			"sourceMap": true,
 			"optimizeLevel": 3,
 			"shrinkLevel": 1,
+			"Ospeed": true,
 			"converge": false,
 			"noAssert": false
 		}

@@ -90,8 +90,13 @@ export class Game {
 	public stateOfPoint(point: Point): i8 {
 		return this.pointGrid[point.x][point.y]
 	}
-	public isRevealed(x: i32, y: i32): boolean {
+	public _isRevealed(x: i32, y: i32): boolean {
 		return this.gameGrid[x][y] != -2
+	}
+	public isRevealed(point: Point): boolean {
+		return this.inBounds(point.x, point.y)
+			? this.gameGrid[point.x][point.y] != -2
+			: true
 	}
 
 	public getInitialPoint(): Point {
@@ -137,10 +142,10 @@ export class Game {
 		return state
 	}
 	public flag(point: Point): void {
-		this.revealedCount++
+		if (this.gameGrid[point.x][point.y] == -2) this.revealedCount++
 		this.gameGrid[point.x][point.y] = -1
 	}
 	public hash(point: Point): u32 {
-		return point.x + point.y * this.size
+		return this.inBounds(point.x, point.y) ? point.x + point.y * this.size : -1
 	}
 }
