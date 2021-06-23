@@ -38,8 +38,8 @@ const renderPointer = {
 		}
 	)
 
-	const size = 100
-	const count = size**2 * 0.1
+	const size = 250
+	const count = size**2 * 0.15
 
 	const game = new exports.Game(size, count)
 

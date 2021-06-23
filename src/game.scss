@@ -6,9 +6,17 @@
 	max-height: 75vmin;
 	max-width: 75vmin;
 
-	background-color: $c3;
+	background-color: $game-bg;
 
-	border-radius: 10px;
+	$shift: 1vmin;
+	box-shadow: calc(#{$shift} * 1) calc(#{$shift} * 1) 0 0 $c1,
+		calc(#{$shift} * 2) calc(#{$shift} * 2) 0 0 $c2,
+		calc(#{$shift} * 3) calc(#{$shift} * 3) 0 0 $c3,
+		calc(#{$shift} * 4) calc(#{$shift} * 4) 0 0 $c4,
+		calc(#{$shift} * 5) calc(#{$shift} * 5) 0 0 $c5,
+		calc(#{$shift} * 6) calc(#{$shift} * 6) 0 0 $c6,
+		calc(#{$shift} * 7) calc(#{$shift} * 7) 0 0 $c7,
+		calc(#{$shift} * 8) calc(#{$shift} * 8) 0 0 $c8;
 
 	padding: 1vmin;
 
@@ -33,20 +41,46 @@
 			}
 		}
 
-		border-color: $c1;
+		border-color: $border;
 
-		opacity: 0;
+		// opacity: 0;
+		&:not(.revealed) {
+			background-color: black !important;
+		}
 		&.revealed {
 			opacity: 1;
 		}
 
-		&.bomb:not(.flagged) {
-			background-color: $c4;
-
-			color: white;
+		&.x0 {
+			background-color: $c0;
 		}
-		&.flagged {
+		&.x1 {
+			background-color: $c1;
+		}
+		&.x2 {
+			background-color: $c2;
+		}
+		&.x3 {
+			background-color: $c3;
+		}
+		&.x4 {
+			background-color: $c4;
+		}
+		&.x5 {
 			background-color: $c5;
+		}
+		&.x6 {
+			background-color: $c6;
+		}
+		&.x7 {
+			background-color: $c7;
+		}
+		&.x8 {
+			background-color: $c8;
+		}
+
+		&.bomb {
+			background-color: $bomb;
 		}
 	}
 }

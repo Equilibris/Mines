@@ -1,5 +1,19 @@
-$c1: #3d5a80;
-$c2: #98c1d9;
-$c3: #e0fbfc;
-$c4: #ee6c4d;
-$c5: #293241;
+@use 'sass:color';
+
+$c0: #4cc9f0;
+$c1: #4895ef;
+$c2: #4361ee;
+$c3: #3f37c9;
+$c4: #3a0ca3;
+$c5: #480ca8;
+$c6: #560bad;
+$c7: #7209b7;
+$c8: #b5179e;
+
+$main-bg: black;
+$vignette: color.adjust($c8, $alpha: -0.5);
+$game-bg: $c0;
+
+$border: transparent;
+
+$bomb: #f72585;

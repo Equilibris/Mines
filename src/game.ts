@@ -14,6 +14,9 @@ const BOMB = '💣'
 const getSymbol = (value: number): string =>
 	value === -1 ? BOMB : String(value)
 
+const getClass = (value: number): string =>
+	value === -1 ? 'bomb' : `x${value}`
+
 export class Game {
 	constructor(
 		private size: number,
@@ -28,12 +31,14 @@ export class Game {
 		for (let i = 0; i < this.size ** 2; i++) {
 			const child = document.createElement('div')
 
-			if (this.size <= 30)
-				child.innerText = getSymbol(
-					this.game._stateOfPoint(i % this.size, Math.floor(i / this.size))
-				)
+			const state = this.game._stateOfPoint(
+				i % this.size,
+				Math.floor(i / this.size)
+			)
 
-			if (child.innerText === BOMB) child.classList.add('bomb')
+			if (this.size <= 30) child.innerText = getSymbol(state)
+
+			child.classList.add(getClass(state))
 
 			if (this.size > 30) child.classList.add('small')
 
