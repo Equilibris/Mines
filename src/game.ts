@@ -55,4 +55,7 @@ export class Game {
 				child.classList.add('revealed')
 		}
 	}
+	markBad() {
+		// TODO: implement me
+	}
 }

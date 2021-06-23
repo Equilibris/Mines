@@ -148,4 +148,9 @@ export class Game {
 	public hash(point: Point): u32 {
 		return this.inBounds(point.x, point.y) ? point.x + point.y * this.size : -1
 	}
+	public unHash(hash: u32): Point {
+		if (hash == -1) throw 'cannot unHash out of bounds point'
+
+		return { x: hash % this.size, y: Math.floor(hash / this.size) as i32 }
+	}
 }

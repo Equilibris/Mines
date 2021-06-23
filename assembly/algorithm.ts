@@ -1,4 +1,4 @@
-import { logS } from './console'
+import { logS, putI } from './console'
 import { Game } from './game'
 import { Point, pointToString } from './point'
 import { render } from './renderer'
@@ -65,7 +65,6 @@ export namespace v1 {
 					if (unresolved.has(game.hash(current))) localUnresolved.push(current)
 				}
 				if (state == flags.length) {
-					logS(`${pointToString(current)} has more to do...`)
 					for (let i = 0; i < localUnresolved.length; i++) {
 						priorityStackQueue.push(localUnresolved[i])
 					}
@@ -80,7 +79,10 @@ export namespace v1 {
 					for (let i = 0; i < localUnresolved.length; i++) {
 						priorityStackQueue.push(localUnresolved[i])
 					}
-				} else continue
+				} else {
+					unresolved.add(game.hash(current))
+					continue
+				}
 				resolved.add(game.hash(current))
 				unresolved.delete(game.hash(current))
 			}
@@ -97,13 +99,26 @@ export namespace v1 {
 
 		const initial = game.getInitialPoint()
 
-		priorityStackQueue.push(initial)
 		unresolved.add(game.hash(initial))
 
-		while (!game.solved) {
-			Objective(game, priorityStackQueue, resolved, unresolved)
+		let lastCount: u32
 
-			render()
+		while (!game.solved) {
+			do {
+				lastCount = game.revealedCount
+
+				const unresolvedElements = unresolved.values()
+
+				for (let i = 0; i < unresolvedElements.length; i++)
+					priorityStackQueue.push(game.unHash(unresolvedElements[i]))
+
+				Objective(game, priorityStackQueue, resolved, unresolved)
+
+				putI(lastCount)
+				putI(game.revealedCount)
+
+				render()
+			} while (lastCount !== game.revealedCount)
 
 			return
 
